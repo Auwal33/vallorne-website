@@ -67,25 +67,41 @@
 })();
 
 
-/* V8: client-only newsletter request and accessible floating contact choices. */
-document.addEventListener('click',function(e){
- const toggle=e.target.closest('.v8-chat-toggle');
- if(toggle){
-  const box=toggle.closest('.v8-chat'),panel=box.querySelector('.v8-chat-panel'),isOpen=!panel.hidden;
-  panel.hidden=isOpen;toggle.setAttribute('aria-expanded',String(!isOpen));return;
- }
- const ai=e.target.closest('.v8-chat-ai');
- if(ai){
-  const box=ai.closest('.v8-chat');
-  const ar=box?.getAttribute('data-lang')==='ar';
-  box.querySelector('.v8-ai-status').textContent=ar?'المساعد الذكي غير متصل بعد. يرجى التواصل مع فريقنا عبر صفحة الاتصال.':'The AI assistant is not connected yet. Please use the contact page to reach our team.';
-  return;
- }
- if(!e.target.closest('.v8-chat')){
-  document.querySelectorAll('.v8-chat').forEach(box=>{
-   const panel=box.querySelector('.v8-chat-panel'); if(panel&&!panel.hidden){panel.hidden=true;box.querySelector('.v8-chat-toggle').setAttribute('aria-expanded','false');}
-  });
- }
-});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('.v8-chat').forEach(box=>{const panel=box.querySelector('.v8-chat-panel');if(panel&&!panel.hidden){panel.hidden=true;box.querySelector('.v8-chat-toggle').setAttribute('aria-expanded','false');box.querySelector('.v8-chat-toggle').focus();}});});
+/* Batch C: product-cover viewer. Tawk.to and email remain unchanged until Batch D. */
+(function(){
+ 'use strict';let opener=null;
+ document.addEventListener('click',function(e){
+   const book=e.target.closest('[data-vc-book]');
+   if(book){
+     const page=book.closest('[data-lang-shell]');if(!page)return;
+     const dlg=page.querySelector('dialog.vc-cover-dialog');if(!dlg)return;
+     opener=book;
+     const picture=dlg.querySelector('[data-vc-modal-image]');
+     const heading=dlg.querySelector('[data-vc-modal-title]');
+     picture.src=book.dataset.vcCover;picture.alt=book.dataset.vcName||'';
+     heading.textContent=(book.dataset.vcSeries||'')+' · '+(book.dataset.vcName||'');
+     dlg.showModal();return;
+   }
+   if(e.target.closest('[data-vc-close]')){e.target.closest('dialog')?.close();}
+   const dlg=e.target.closest('dialog.vc-cover-dialog');
+   if(dlg&&e.target===dlg){dlg.close();}
+ });
+ document.querySelectorAll('dialog.vc-cover-dialog').forEach(dlg=>dlg.addEventListener('close',()=>{if(opener&&opener.isConnected)opener.focus();}));
+})();
 
+// Open an explorer correctly when navigating from another page's Publications menu.
+(function(){
+ 'use strict';
+ function syncPublishedBookHash(){
+  const id=decodeURIComponent((window.location.hash||'').slice(1));
+  if(!/^(en|ar)-showroom-(global-pathways|money-lab|latitude)$/.test(id))return;
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.open=true;
+  // Allow the page to lay out before scrolling.
+  setTimeout(()=>el.scrollIntoView({block:'start',behavior:'auto'}),80);
+ }
+ window.addEventListener('hashchange',syncPublishedBookHash);
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncPublishedBookHash);
+ else syncPublishedBookHash();
+})();

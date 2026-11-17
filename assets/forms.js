@@ -11,7 +11,8 @@
     subscribed: ar ? 'يرجى مراجعة بريدك لتأكيد اشتراكك.' : 'Please check your email to confirm your subscription.',
     whatsapp: ar ? 'لم يُفعّل رقم واتساب الخاص بالمؤسسة بعد.' : 'The business WhatsApp number has not been configured.',
     cv: ar ? 'يرجى إرفاق ملف PDF لا يتجاوز 4 ميغابايت.' : 'Please attach a PDF file no larger than 4 MB.',
-    captcha: ar ? 'يرجى إكمال فحص التحقق قبل الإرسال.' : 'Please complete the verification before submitting.'
+    captcha: ar ? 'يرجى إكمال فحص التحقق قبل الإرسال.' : 'Please complete the verification before submitting.',
+    consent: ar ? 'يُرجى الموافقة على تلقي التحديثات قبل المتابعة.' : 'Please agree to receive updates before continuing.'
   };
   let config = {contactReady:false,careersReady:false,newsletterReady:false,whatsappNumber:'',turnstileSiteKey:''};
   const forms = [...document.querySelectorAll('.vallorne-contact-form, .vp-career-form, .v8-newsletter-form')];
@@ -91,7 +92,7 @@
     } else {
       if (!config.newsletterReady) return status(form,translations.unavailable);
       const data=Object.fromEntries(new FormData(form).entries());
-      data.consent='yes';
+      if(data.consent!=='yes') return status(form,translations.consent);
       submit(form,'/api/newsletter',JSON.stringify(data),translations.subscribed);
     }
   }));

@@ -1,9 +1,8 @@
-import {respond,clean,emailValid,sameOrigin,checkTurnstile,readyEmail,sendEmail,fail} from '../_server/utils.js';
+import {respond,clean,boundedJSON,emailValid,sameOrigin,checkTurnstile,contactConfigured,sendEmail,fail} from '../_server/utils.js';
 export async function onRequestPost({request,env}){
- if (!readyEmail(env)||!env.TURNSTILE_SECRET_KEY) return fail(503);
+ if (!contactConfigured(env)) return fail(503);
  if (!sameOrigin(request)) return fail(403);
- if (Number(request.headers.get('content-length')||0)>16000) return fail(413);
- let d;try{d=await request.json();}catch(_){return fail(400);}
+ let d;try{d=await boundedJSON(request,16000);}catch(e){return fail(e.message==='too_large'?413:400);}
  if (d.website) return respond({ok:true}); // silent honeypot
  const name=clean(d.name,100), email=clean(d.email,160), message=clean(d.message,3800), org=clean(d.organisation,130), phone=clean(d.phone,50);
  if(name.length<2||!emailValid(email)||message.length<10) return fail(400);

@@ -1,9 +1,8 @@
-import {respond,emailValid,clean,sameOrigin,checkTurnstile,fail} from '../_server/utils.js';
+import {respond,emailValid,clean,boundedJSON,sameOrigin,checkTurnstile,newsletterConfigured,fail} from '../_server/utils.js';
 export async function onRequestPost({request,env}){
- if (!env.BREVO_API_KEY||!env.BREVO_LIST_ID||!env.BREVO_DOI_TEMPLATE_ID||!env.BREVO_CONFIRM_REDIRECT_URL||!env.TURNSTILE_SECRET_KEY)return fail(503);
+ if (!newsletterConfigured(env))return fail(503);
  if (!sameOrigin(request))return fail(403);
- if(Number(request.headers.get('content-length')||0)>8000)return fail(413);
- let data;try{data=await request.json();}catch(_){return fail(400);}
+ let data;try{data=await boundedJSON(request,8000);}catch(e){return fail(e.message==='too_large'?413:400);}
  if(data.website)return respond({ok:true});
  const email=clean(data.email,160);
  if(!emailValid(email)||data.consent!=='yes')return fail(400);

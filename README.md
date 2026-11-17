@@ -1,6 +1,16 @@
+# Batch D integration-ready staging | 17 November 2026
+
+**STAGING, NOT DEPLOYED.** Continue from approved Batch C product showroom. Chat property, logo favicon and server-side forms have been prepared; account-specific Cloudflare/R2/Turnstile and Resend setup remains pending. See `docs/BATCH_D_INTEGRATIONS_AND_RELEASE_GATE.md`.
+
+# Batch 7 founder and SEO staging - 13 November 2026
+
+**NOT DEPLOYED. Owner review required.** This package extends Batch 6. Extract the ZIP to a GitHub branch/repository root only after review; do not push production main as a test. See docs/BATCH7_FOUNDER_SEO_RELEASE_GATE.md.
+
 # Vallorne Educational Services | Cloudflare Pages Website
 
-**Version 9, 9 November 2026 | GitHub and Cloudflare Pages release package**
+**Batch 6 visual-integration staging, 12 November 2026 | Owner approval required before GitHub/Cloudflare deployment.**
+
+The owner-selected six images are now integrated into the two homepage carousels and four GCC context cards. See `docs/BATCH6_FINAL_IMAGE_AND_RELEASE_GATE.md` and `docs/BATCH6_QA_RESULTS.md`. Form and chatbot activation remain outstanding. The repository stays flat, with build output `.`. Original v9 deployment instructions continue below.
 
 This ZIP is a complete bilingual website repository. **Extract its contents into the repository root**. Do not upload the ZIP file itself as the website source.
 
@@ -74,3 +84,18 @@ The package was checked with HTML asset/link auditing and inline desktop/mobile 
 ## Update to an existing GitHub-connected website
 
 This edition is deliberately flattened for an existing Cloudflare Pages project whose previous GitHub version had `index.html` in the repository root. On Cloudflare Pages, the build output directory must be `.` (or the repository root). If the project instead uses `public`, update its build output setting to `.` before relying on automatic deployment. The production branch is `main`. Store all secrets in Cloudflare settings, never GitHub source.
+
+
+## Batch A visual refinement (16 November 2026)
+This controlled presentation-only pass starts from Vallorne_Batch7_Approved_Corrections_STAGING_NOT_DEPLOYED.zip. It makes no live-service or deployment changes.
+- Corrects navy-surface gold label contrast and heading spacing.
+- Uses a readable long-heading face where Cinzel display becomes difficult to read.
+- Normalizes About team portrait frames and paragraph size.
+- Replaces cool-blue hero tint and teal social buttons with the approved warm palette.
+- Replaces the homepage Q/A/C/I tile letters with matching line icons.
+- Unifies inner-page hero treatments.
+- Distinguishes footer/CTA colors; fixes newsletter consent checkbox alignment.
+- Reduces mobile header bulk and duplicate booking CTA.
+- Changes the statistics STRIP to navy but PRESERVES exactly 20+ Years, 9 Service Pathways, Multiple Accreditation Cycles and the Arabic equivalents.
+- Moves existing Careers footer link into Explore to avoid one-link footer column.
+- No Latin/Arabic copy additions; no product/service modifications. Batch B and C remain separate.
